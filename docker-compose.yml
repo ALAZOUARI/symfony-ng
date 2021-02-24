@@ -1,8 +1,5 @@
 version: '3'
 
-networks: 
-  nginx-php-mysql-node:
-
 services: 
 
 
@@ -18,10 +15,7 @@ services:
     depends_on:
       - php-service
       - mysql-service
-    networks: 
-      - nginx-php-mysql-node
-     
-
+  
   
   php-service:
     build: 
@@ -32,9 +26,7 @@ services:
       - "9000:9000"
     volumes: 
       - ./graphqlexample:/var/www/project
-    networks: 
-      - nginx-php-mysql-node
-
+    
   mysql-service:
     image: mysql:8
     container_name: mysql-container
@@ -42,41 +34,21 @@ services:
             - "3306:3306"
     volumes:
       - ./mysql:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    restart: on-failure # always restart unless stopped manually
+    restart: on-failure 
     environment:
       MYSQL_DATABASE: graphqlexample
       MYSQL_USER: root
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-    networks: 
-      - nginx-php-mysql-node 
+    
 
-
+##Conteneur Adminer pour gérer la BD avec une interface graphique 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8081:8080
-
-  node-service:
-    image: node:latest
-    container_name: node-container
-    volumes: 
-      - ./graphqlexample:/var/www/project
-    working_dir: /var/www/project
-    networks: 
-      - nginx-php-mysql-node
   
-  nginx:
-    build: ./nginx-angular
-    container_name: nginx-angular
-    ports:
-      - "81:80"
-      - "443:443"
-    volumes:
-      - ./graphqlfront2/dist/graphqlfront2:/usr/share/nginx/html
-
-
+ #Conteneur node pour servir l'application Angular 
   node:
     build: ./graphqlfront2
     container_name: angular_node
@@ -90,8 +62,3 @@ services:
       - -c
       - |
           cd /home/node/app/frontend && npm start
-    expose:
-      - 4200
-
-
-

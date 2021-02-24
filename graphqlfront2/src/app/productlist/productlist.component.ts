@@ -5,23 +5,29 @@ import {MatDialog} from '@angular/material/dialog';
 import {ConfirmDialogComponent} from '../../@root/confirm-dialog/confirm-dialog.component';
 import {Apollo, gql} from 'apollo-angular';
 import {takeUntil} from 'rxjs/operators';
+import {ProductService} from '../../services/product.service';
 
 @Component({
   selector: 'app-productlist',
   templateUrl: './productlist.component.html',
   styleUrls: ['./productlist.component.css']
 })
-export class ProductlistComponent implements OnInit{
+export class ProductlistComponent implements OnInit , OnDestroy{
 
   protected onDestroy = new Subject<void>();
-  displayedColumns: string[] = ['id', 'name', 'price'];
+  displayedColumns: string[] = ['id', 'name', 'price', 'actions'];
   dataSource: Product[] = [] ;
 
 
   constructor(private dialog: MatDialog,
-              private apollo: Apollo) { }
+              private apollo: Apollo ,
+              private productService: ProductService) { }
   ngOnInit(): void {
     this.fetchDataSource();
+  }
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.complete();
   }
 
   // tslint:disable-next-line:typedef
@@ -33,7 +39,7 @@ export class ProductlistComponent implements OnInit{
             products{
                   edges{
                       node{
-                          id
+                          _id
                           name
                           price
                           }
@@ -50,4 +56,20 @@ export class ProductlistComponent implements OnInit{
   }
 
 
+  onRemoveAccount(id: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      hasBackdrop: true,
+      disableClose: false,
+    });
+
+    dialogRef.componentInstance.confirmButtonColor = 'warn';
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy)).subscribe(isDeleteConfirmed => {
+      console.log('removing: ', isDeleteConfirmed);
+      if (isDeleteConfirmed) {
+        this.productService.deleteprod('/api/products/' + id);
+      }
+    });
+
+  }
 }

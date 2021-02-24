@@ -7,6 +7,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {ConfirmDialogModule} from './confirm-dialog/confirm-dialog.module';
 import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
 
 
 
@@ -20,6 +22,10 @@ import {MatNativeDateModule} from '@angular/material/core';
     ConfirmDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    BrowserModule,
+    CommonModule,
+    MaterialModule,
+
   ],
   exports: [
     MaterialModule,
@@ -30,6 +36,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     ConfirmDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    BrowserModule,
+    CommonModule,
+    MaterialModule,
   ]
 })
 export class SharedModule { }

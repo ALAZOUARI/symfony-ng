@@ -8,11 +8,13 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import {SharedModule} from '../@root/shared.module';
 import {ProductlistComponent} from './productlist/productlist.component';
+import {ProductformComponent} from './productform/productform.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductlistComponent
+    ProductlistComponent,
+    ProductformComponent,
   ],
   imports: [
     BrowserModule,
@@ -20,7 +22,7 @@ import {ProductlistComponent} from './productlist/productlist.component';
     BrowserAnimationsModule,
     GraphQLModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
