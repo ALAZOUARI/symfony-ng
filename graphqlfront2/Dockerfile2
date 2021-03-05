@@ -1,0 +1,17 @@
+FROM node:latest
+
+USER node
+
+RUN mkdir /home/node/.npm-global
+COPY  ./graphqlfront2 /home/node/app/frontend
+ENV PATH=/home/node/.npm-global/bin:$PATH
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+
+ENV HOME=/home/node
+WORKDIR $HOME/app
+
+RUN npm i -g npm
+
+RUN npm install -g @angular/cli && npm cache clean --force
+
+CMD [ "node" ]
