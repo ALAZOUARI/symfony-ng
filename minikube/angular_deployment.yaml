@@ -16,5 +16,8 @@ spec:
       containers: 
       - name: angular 
         image: alazouari/angular-nginx
+        imagePullPolicy: Always
         ports: 
         - containerPort: 80
+      imagePullSecrets:
+      - name: regcred
